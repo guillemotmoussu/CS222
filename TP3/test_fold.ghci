@@ -11,4 +11,4 @@ myFoldl (-) 0 [1,2]        --(-3)
 
 myFoldr (-) 0 [1,2]        --(-1)
 
-join ["Hello","World","!"] --"Hello World !"
+join ["Hello","World","!"] --"Hello World ! "

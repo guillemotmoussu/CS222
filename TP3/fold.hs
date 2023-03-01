@@ -18,13 +18,13 @@ acc f i (x:xs) = f x (acc f i xs)
 
 myFoldl :: (b -> a -> b) -> b -> [a] -> b
 myFoldl f i [] = i
-myFoldl f i (x:xs) = f (myFoldl f i xs) x
+myFoldl f i (x:xs) = myFoldl f (f i x) xs
 
 myFoldr :: (a -> b -> b) -> b -> [a] -> b
 myFoldr f i [] = i
 myFoldr f i (x:xs) = f x (myFoldr f i xs)
 
 join :: [[Char]] -> [Char]
-join [] = []
-join [x] = x
-join (x:xs) = x ++ ' ':join xs
+join = myFoldr (\x y -> x ++ [' '] ++ y) []
+
+-- foldl et foldr seront équivalentes si les types a et b sont identiques et que la fonction f est une lci associative
