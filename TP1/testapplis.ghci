@@ -1,0 +1,5 @@
+app f = map f [1,2,3,4,5]
+-- ne renvoie rien
+
+mod2 27
+-- renvoie le résultat de mod 27 2

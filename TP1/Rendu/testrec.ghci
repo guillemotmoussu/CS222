@@ -1,0 +1,74 @@
+
+-- puissance
+puissance 5 4
+ -- 625
+puissance (-9) 3
+ -- -729
+puissance 2 10
+ -- 1024
+puissance 0 0
+ -- 1
+puissance 1 (-1)
+ -- 0 instead of stack overflow (end of script)
+
+ -- corriger ça n'est même pas demandé, mais bon, pourquoi pas...
+ -- maintenant je retourne 0 au lieu de laisser planter le script
+
+
+-- factorielle:
+fact 5
+ -- 120
+fact 7
+ -- 5040
+fact (puissance 2 3)
+ -- 40320
+fact 0
+ -- 1
+fact (-1)
+ -- 0 instead of stack overflow (end of script)
+
+
+-- somme carres:
+squaresum 3
+ -- 14
+squaresum 11
+ -- 506
+squaresum (puissance 3 3)
+ -- 6930
+squaresum 0
+ -- 0
+squaresum (-1)
+ -- 0 instead of stack overflow (end of script)
+
+
+-- fibonacci:
+fibo 7
+ -- 13
+fibo 21
+ -- 10946
+fibo (puissance 2 5)
+ -- 2178309 (taking 2 to 3 seconds)
+fibo 0
+ -- 0
+fibo (-1)
+ -- 0 instead of stack overflow (end of script)
+
+
+-- exponentiation rapide:
+power 5 4
+ -- 625
+power (-9) 3
+ -- -729
+power 2 20
+ -- 1048576
+power 0 0
+ -- 1
+power 1 (-1)
+ -- 0 instead of stack overflow (end of script)
+ -- je n'effectuerai pas les appels à la main (pas le temps...)
+ -- mais pas besoin d'être un ordinateur pour comprendre:
+ -- complexité récursive de puissance: O(n)
+ -- complexité récursive de power: O(log(n))
+
+
+--end

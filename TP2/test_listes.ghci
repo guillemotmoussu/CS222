@@ -1,0 +1,21 @@
+
+myMap abs [-1,-3,4,-12]            --[1,3,4,12]
+map abs [-1,-3,4,-12]
+myMap reverse ["abc","cda","1234"] --["cba","adc","4321"]
+map reverse ["abc","cda","1234"]
+myMap (3*) [1,2,3,4]               --[3,6,9,12]
+map (3*) [1,2,3,4]
+
+myFilter (>5) [1,2,3,4,5,6,7,8]    --[6,7,8]
+filter (>5) [1,2,3,4,5,6,7,8]
+myFilter odd [3,6,7,9,12,14]       --[3,7,9]
+filter odd [3,6,7,9,12,14]
+myFilter (\x -> length x > 4) ["aaaa","bbbbb","cc"] --["bbbbb"]
+filter (\x -> length x > 4) ["aaaa","bbbbb","cc"]
+
+myUnzip [(1,8),(3,2),(5,0)]         --([1,3,5],[8,2,0])
+unzip [(1,8),(3,2),(5,0)]
+myUnzip [(1,2),(2,3)]               --([1,2],[2,3])
+unzip [(1,2),(2,3)]
+
+zip [1,3,5] [2,4,6]                 --[(1,2),(3,4),(5,6)]

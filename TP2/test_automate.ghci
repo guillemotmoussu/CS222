@@ -1,0 +1,14 @@
+
+lancerMachine (0,Vide)       --(0,Percolation)
+attendre (0,Percolation)     --(0,CafePret 4)
+servirCafe (0,CafePret 4)    --(1,CafePret 3)
+servirCafe (1,CafePret 3)    --(2,CafePret 2)
+lancerMachine (2,CafePret 2) --(2,Percolation)
+attendre (2,Percolation)     --(2,CafePret 4)
+attendre (2,CafePret 4)      --(2,CafePret 4)
+lancerMachine (2,CafePret 4) --(2,CafePret 4)
+
+executerActions (0,Vide) "LASSA"                       -- (2,CafePret 2)
+executerActions (0,Vide) "LSASS"                       -- (2,CafePret 2)
+executerActions (0,Vide) "LASLASSLAS"                  -- (4,CafePret 3)
+executerActions (0,Vide) "LASSASSLSSASSSLSASSAASSLSAS" -- (12,CafePret 3)

@@ -1,0 +1,14 @@
+sommeListe [1,2,3,4,5]     --15
+
+accInts (+) 0 [1,2,3]      --6
+accInts (-) 10 [1,2,3]     --(-8)
+
+maxListe [1,200,3]         --200
+
+acc (+) 0.5 [1.1,1.2,1.3]  --4.1
+
+myFoldl (-) 0 [1,2]        --(-3)
+
+myFoldr (-) 0 [1,2]        --(-1)
+
+join ["Hello","World","!"] --"Hello World !"

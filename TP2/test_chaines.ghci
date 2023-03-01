@@ -1,0 +1,9 @@
+
+repeterNFois 5 'b'    --"bbbbb"
+repeterNFoisBis 5 5.5 --[5.5,5.5,5.5,5.5,5.5]
+
+etoiles 3 "abc"         --"***abc***"
+
+slashes "abc"           --"/abc/"
+
+commentaireDocumentation "abc" --"/**abc**/"
