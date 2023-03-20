@@ -1,0 +1,20 @@
+abr_nbr = Node 4 (Node (-5) (Leaf (-8)) (Leaf 0)) (Node 18 (Leaf 13) (Node 42 (Leaf 28) (Leaf 73)))
+abr_txt = Node 'a' (Node 'b' (Leaf 'd') (Leaf 'e')) (Leaf 'c')
+
+parcours_infixe abr_nbr -- [-8,-5,0,4,13,18,28,42,73]
+parcours_infixe abr_txt -- "dbeac"
+
+foldr (+) 0 (parcours_infixe abr_nbr) -- 165
+foldr_arbre (+) 0 abr_nbr -- 165
+
+foldr (-) 0 (parcours_infixe abr_nbr) -- 47
+foldr_arbre (-) 0 abr_nbr -- 47
+
+foldr (:) [] (parcours_infixe abr_txt) -- "dbeac"
+foldr_arbre (:) [] abr_txt -- "dbeac"
+
+to_list abr_nbr -- [-8,-5,0,4,13,18,28,42,73]
+to_list abr_txt -- "dbeac"
+
+sum abr_nbr -- 165
+
