@@ -31,6 +31,22 @@ show_json (JSON_Object kvs) = "{" ++ intercalate "," (map show_pair kvs) ++ "}"
 instance Show JSON where
     show = show_json
 
+show_task :: Task -> String
+show_task (PrintVal x) = show x
+show_task (PrintSum x y) = show x ++ " " ++ show y
+
+instance Show Task where
+    show = show_task
+
+eq_task :: Task -> Task -> Bool
+eq_task (PrintSum _ _) (PrintVal _) = False
+eq_task (PrintVal _) (PrintSum _ _) = False
+eq_task (PrintVal x) (PrintVal y) = (==) x y
+eq_task (PrintSum x1 x2) (PrintSum y1 y2) = (&&) ((==) x1 y1) ((==) x2 y2)
+
+instance Eq Task where
+    (==) = eq_task
+
 data Task =
     PrintVal Integer |
     PrintSum Integer Integer
