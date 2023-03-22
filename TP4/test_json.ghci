@@ -1,3 +1,51 @@
-exemple_tableau
+-- ### Tests de notation ###
+-- Affiche la notation JSON du tableau
+show_json exemple_tableau
+-- "[42,true,\"JSON!\",[false,0]]"
 
-exemple_objet
+-- Affiche la notation JSON de l'objet
+show_json exemple_objet
+-- "{\"entier\":42,\"texte\":\"Haskell!\",\"tableau\":[true]}"
+
+-- Affiche la notation JSON du tableau
+show exemple_tableau
+-- "[42,true,\"JSON!\",[false,0]]"
+
+-- Affiche la notation JSON de l'objet
+show exemple_objet
+-- "{\"entier\":42,\"texte\":\"Haskell!\",\"tableau\":[true]}"
+
+
+-- ### Tests de sérialisation ###
+
+-- Affiche la représentation JSON de : {"op":"PrintVal","x":42}
+serialize_task (PrintVal 42)
+
+-- Affiche la représentation JSON de : {"op":"PrintSum","x":12,"y":30}
+serialize_task (PrintSum 12 30)
+
+-- Affiche Just (PrintVal 42)
+deserialize_task (JSON_Object [("op", JSON_String "PrintVal"), ("x", JSON_Int 42)])
+
+-- Affiche Just (PrintSum 12 30)
+deserialize_task (JSON_Object [("op", JSON_String "PrintSum"), ("x", JSON_Int 12), ("y", JSON_Int 30)])
+
+-- Affiche Nothing car json3 ne correspond à aucun des deux encodages valides
+deserialize_task (JSON_Object [("op", JSON_String "PrintVal"), ("x", JSON_Bool True)])
+
+
+-- ### Test de sérialisation de tâches ###
+
+testSerializeTask t = Just t == deserialize (serialize t)
+testSerializeTaskList ts = Just ts == deserialize (serialize ts)
+
+-- Exemples de tâches
+task1 = PrintVal 42
+task2 = PrintSum 10 20
+task3 = PrintVal 100
+taskList = [task1, task2, task3]
+
+-- Tests
+testSerializeTask task1 -- True
+testSerializeTask task2 -- True
+testSerializeTaskList taskList -- True
