@@ -5,6 +5,7 @@ tas_min t1 -- (-8)
 noeud 1 (Noeud 1 5 Vide Vide) (Noeud 1 42 Vide Vide) -- Noeud 3 1 (Noeud 1 5 Vide Vide) (Noeud 1 42 Vide Vide)
 
 est_equilibre t1 -- True
+
 t2 = Noeud 5 (-8) (Noeud 3 1 (Noeud 1 5 Vide Vide) (Noeud 1 42 Vide Vide)) (Noeud 1 (-3) Vide Vide)
 est_equilibre t2 -- False
 

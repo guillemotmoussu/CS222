@@ -33,6 +33,28 @@ ajouter t (Noeud _ v x y)
     | taille x > taille y = noeud t x (ajouter (tas_min y) y)
     | otherwise = noeud t (ajouter (tas_min x) x) y
 
---retirer_feuille :: Tas a -> (a, Tas a)
---retirer_feuille (Noeud 1 x Vide Vide) = x, (Noeud 1 Vide Vide)
---retirer_feuille (Noeud _ _ x y) = max(retirer_feuille x,retirer_feuille y),?
+retirer_feuille :: Ord a => Tas a -> (a, Tas a)
+retirer_feuille (Noeud _ x Vide Vide) = (x, Vide)
+retirer_feuille (Noeud _ x l Vide) = (x, l)
+retirer_feuille (Noeud _ x Vide r) = (x, r)
+retirer_feuille (Noeud _ x l r)
+  | taille l > taille r = let (y, l') = retirer_feuille l in (y, noeud x l' r)
+  | otherwise = let (y, r') = retirer_feuille r in (y, noeud x l r')
+-- erreur à l'exécution pour liste vide ?
+
+equilibrer :: Ord a => Tas a -> Tas a
+equilibrer t@(Noeud _ _ l r)
+  | taille l == taille r = t
+  | taille l == taille r + 1 = t
+  | taille r == taille l + 1 = noeud x l (equilibrer (ajouter y r'))
+  where
+    (x, l') = retirer_feuille l
+    (y, r') = retirer_feuille r
+
+retirer :: Ord a => Tas a -> Tas a
+retirer (Noeud _ _ l r) = equilibrer (ajouter x (ajouter y l))
+  where
+    (x, l') = retirer_feuille l
+    (y, r') = retirer_feuille r
+
+-- construit :: Ord a => [a] -> Tas a
