@@ -41,15 +41,16 @@ retirer_feuille (Noeud _ x l r)
   | taille l > taille r = let (y, l') = retirer_feuille l in (y, noeud x l' r)
   | otherwise = let (y, r') = retirer_feuille r in (y, noeud x l r')
 -- erreur à l'exécution pour liste vide ?
+-- quelle liste ?
+-- en plus la fonction prend un tas non vide equilibré, donc tant mieux si ça plante quand il est vide
 
 equilibrer :: Ord a => Tas a -> Tas a
-equilibrer t@(Noeud _ _ l r)
-  | taille l == taille r = t
-  | taille l == taille r + 1 = t
-  | taille r == taille l + 1 = noeud x l (equilibrer (ajouter y r'))
-  where
-    (x, l') = retirer_feuille l
-    (y, r') = retirer_feuille r
+equilibrer t@(Noeud _ z l r)
+  | (&&) (taille r < taille l + 2) (taille l < taille r + 2) = t
+  | taille l > taille r + 1 = let (x, l') = retirer_feuille l in equilibrer (noeud z l' (ajouter x (equilibrer r)))
+  | taille r > taille l + 1 = let (y, r') = retirer_feuille r in equilibrer (noeud z (ajouter y (equilibrer l)) r')
+
+-- sus ?  | taille r > taille l + 1 = noeud x l (equilibrer (ajouter y r'))
 
 retirer :: Ord a => Tas a -> Tas a
 retirer (Noeud _ _ l r) = equilibrer (ajouter x (ajouter y l))
