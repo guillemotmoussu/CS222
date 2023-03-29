@@ -26,9 +26,9 @@ est_equilibre (Noeud _ _ x y) = (&&)
     (est_equilibre x && est_equilibre y)
 
 ajouter :: Ord a => a -> Tas a -> Tas a
-ajouter t Vide = noeud t Vide Vide
+ajouter t Vide = Noeud 1 t Vide Vide
 ajouter t (Noeud _ v x y)
-    | (&&) (t > v) (taille x > taille y) = ajouter t y
+    | (t > v) && (taille x > taille y) = ajouter t y
     | t > v = ajouter t x
     | taille x > taille y = noeud t x (ajouter (tas_min y) y)
     | otherwise = noeud t (ajouter (tas_min x) x) y
@@ -40,9 +40,6 @@ retirer_feuille (Noeud _ x Vide r) = (x, r)
 retirer_feuille (Noeud _ x l r)
   | taille l > taille r = let (y, l') = retirer_feuille l in (y, noeud x l' r)
   | otherwise = let (y, r') = retirer_feuille r in (y, noeud x l r')
--- erreur à l'exécution pour liste vide ?
--- quelle liste ?
--- en plus la fonction prend un tas non vide equilibré, donc tant mieux si ça plante quand il est vide
 
 equilibrer :: Ord a => Tas a -> Tas a
 equilibrer t@(Noeud _ z l r)
@@ -58,4 +55,16 @@ retirer (Noeud _ _ l r) = equilibrer (ajouter x (ajouter y l))
     (x, l') = retirer_feuille l
     (y, r') = retirer_feuille r
 
--- construit :: Ord a => [a] -> Tas a
+construit :: Ord a => [a] -> Tas a
+construit [] = Vide
+construit (x:xs) = ajouter x (construit xs)
+
+deconstruit :: Ord a => Tas a -> [a]
+deconstruit Vide = []
+deconstruit t = x : deconstruit (retirer t)
+  where
+    (x, _) = retirer_feuille t
+
+tri :: Ord a => [a] -> [a]
+tri [] = []
+tri xs = deconstruit (construit xs)
