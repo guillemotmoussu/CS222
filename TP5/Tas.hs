@@ -11,60 +11,56 @@ t1 = Noeud 8 (-8)
 
 taille :: Tas a -> Int
 taille Vide = 0
-taille (Noeud x _ _ _) = x
+taille (Noeud t _ _ _) = t
 
 tas_min :: Tas a -> a
-tas_min (Noeud _ x _ _) = x
+tas_min (Noeud _ v _ _) = v
 
 noeud :: Ord a => a -> Tas a -> Tas a -> Tas a
-noeud t x y | (&&) (t <= tas_min x) (t <= tas_min y) = Noeud (taille x + taille y + 1) t x y
+noeud t Vide Vide = Noeud 1 t Vide Vide
+noeud t Vide y | t <= tas_min y = Noeud (0 + taille y + 1) t Vide y
+noeud t x Vide | t <= tas_min x = Noeud (taille x + 0 + 1) t x Vide
+noeud t x y = Noeud (taille x + taille y + 1) t x y
 
 est_equilibre :: Tas a -> Bool
 est_equilibre Vide = True
 est_equilibre (Noeud _ _ x y) = (&&)
-    ((taille x - taille y) < 2 && (taille y - taille x) < 2)
+    (((taille x - taille y) < 2) && ((taille y - taille x) < 2))
     (est_equilibre x && est_equilibre y)
 
 ajouter :: Ord a => a -> Tas a -> Tas a
-ajouter t Vide = Noeud 1 t Vide Vide
+ajouter t Vide = noeud t Vide Vide
 ajouter t (Noeud _ v x y)
-    | (t > v) && (taille x > taille y) = ajouter t y
-    | t > v = ajouter t x
-    | taille x > taille y = noeud t x (ajouter (tas_min y) y)
-    | otherwise = noeud t (ajouter (tas_min x) x) y
+    | (t > v) && (taille x > taille y) = noeud v x (ajouter t y)
+    | t > v = noeud v (ajouter t x) y
+    | taille x > taille y = noeud t x (ajouter v y)
+    | otherwise = noeud t (ajouter v x) y
 
 retirer_feuille :: Ord a => Tas a -> (a, Tas a)
-retirer_feuille (Noeud _ x Vide Vide) = (x, Vide)
-retirer_feuille (Noeud _ x l Vide) = (x, l)
-retirer_feuille (Noeud _ x Vide r) = (x, r)
-retirer_feuille (Noeud _ x l r)
-  | taille l > taille r = let (y, l') = retirer_feuille l in (y, noeud x l' r)
-  | otherwise = let (y, r') = retirer_feuille r in (y, noeud x l r')
+retirer_feuille (Noeud _ v Vide Vide) = (v, Vide)
+retirer_feuille (Noeud _ v l r)
+  | taille l > taille r = let (y, l') = retirer_feuille l in (y, noeud v l' r)
+  | otherwise = let (y, r') = retirer_feuille r in (y, noeud v l r')
 
 equilibrer :: Ord a => Tas a -> Tas a
-equilibrer t@(Noeud _ z l r)
-  | (&&) (taille r < taille l + 2) (taille l < taille r + 2) = t
-  | taille l > taille r + 1 = let (x, l') = retirer_feuille l in equilibrer (noeud z l' (ajouter x (equilibrer r)))
-  | taille r > taille l + 1 = let (y, r') = retirer_feuille r in equilibrer (noeud z (ajouter y (equilibrer l)) r')
-
--- sus ?  | taille r > taille l + 1 = noeud x l (equilibrer (ajouter y r'))
+equilibrer Vide = Vide
+equilibrer (Noeud _ v l r)
+  | (&&) (taille r < taille l + 2) (taille l < taille r + 2) = noeud v l r
+  | taille l > taille r + 1 = let (x, l') = retirer_feuille l in equilibrer (noeud v (equilibrer l') (ajouter x (equilibrer r)))
+  | taille r > taille l + 1 = let (y, r') = retirer_feuille r in equilibrer (noeud v (ajouter y (equilibrer l)) (equilibrer r'))
 
 retirer :: Ord a => Tas a -> Tas a
-retirer (Noeud _ _ l r) = equilibrer (ajouter x (ajouter y l))
-  where
-    (x, l') = retirer_feuille l
-    (y, r') = retirer_feuille r
+retirer (Noeud _ _ Vide Vide) = Vide
+retirer (Noeud _ _ x y)
+  | taille x > taille y = noeud (tas_min x) (retirer x) y
+  | otherwise = noeud (tas_min y) x (retirer y)
 
 construit :: Ord a => [a] -> Tas a
-construit [] = Vide
-construit (x:xs) = ajouter x (construit xs)
+construit = foldr ajouter Vide
 
 deconstruit :: Ord a => Tas a -> [a]
 deconstruit Vide = []
-deconstruit t = x : deconstruit (retirer t)
-  where
-    (x, _) = retirer_feuille t
+deconstruit t = tas_min t:deconstruit (retirer t)
 
 tri :: Ord a => [a] -> [a]
-tri [] = []
-tri xs = deconstruit (construit xs)
+tri = deconstruit . construit
