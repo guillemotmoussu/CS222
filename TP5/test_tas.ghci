@@ -18,8 +18,8 @@ ajouter (-9) t1 -- Noeud 9 (-9) (Noeud 4 (-8) (Noeud 2 1 (Noeud 1 5 Vide Vide) V
 ajouter 100 t1 -- Noeud 9 (-8) (Noeud 4 1 (Noeud 2 5 (Noeud 1 100 Vide Vide) Vide) (Noeud 1 42 Vide Vide)) (Noeud 4 (-3) (Noeud 2 28 Vide (Noeud 1 60 Vide Vide)) (Noeud 1 7 Vide Vide))
 ajouter (-5) Vide -- Noeud 1 (-5) Vide Vide
 
-retirer_feuille t1
-retirer_feuille (snd(retirer_feuille t1))
+retirer_feuille t1 -- (60,Noeud 7 (-8) (Noeud 3 1 (Noeud 1 5 Vide Vide) (Noeud 1 42 Vide Vide)) (Noeud 3 (-3) (Noeud 1 28 Vide Vide) (Noeud 1 7 Vide Vide)))
+retirer_feuille (snd(retirer_feuille t1)) -- (7,Noeud 6 (-8) (Noeud 3 1 (Noeud 1 5 Vide Vide) (Noeud 1 42 Vide Vide)) (Noeud 2 (-3) (Noeud 1 28 Vide Vide) Vide))
 
 equilibrer t1 -- Noeud 8 (-8) (Noeud 3 1 (Noeud 1 5 Vide Vide) (Noeud 1 42 Vide Vide)) (Noeud 4 (-3) (Noeud 2 28 Vide (Noeud 1 60 Vide Vide)) (Noeud 1 7 Vide Vide))
 equilibrer t2 -- Noeud 5 (-8) (Noeud 2 1 (Noeud 1 5 Vide Vide) Vide) (Noeud 2 (-3) (Noeud 1 42 Vide Vide) Vide)
@@ -32,3 +32,4 @@ construit [1, 2, 3, 4, 5, 6, 7, 8, 9] -- Noeud 9 1 (Noeud 4 3 (Noeud 2 5 (Noeud 
 
 tri [1, 4, 8, -5] -- [-5,1,4,8]
 tri [1, 4, 0, -5] -- [-5,0,1,4]
+tri [1, 4, 0, -5, 3, 2, 7, 6, 5, 9, 8] -- [-5,0,1,2,3,4,5,6,7,8,9]

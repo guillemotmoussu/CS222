@@ -51,9 +51,11 @@ equilibrer (Noeud _ v l r)
 
 retirer :: Ord a => Tas a -> Tas a
 retirer (Noeud _ _ Vide Vide) = Vide
-retirer (Noeud _ _ x y)
-  | taille x > taille y = noeud (tas_min x) (retirer x) y
-  | otherwise = noeud (tas_min y) x (retirer y)
+retirer (Noeud _ _ x Vide) = x
+retirer (Noeud _ _ Vide y) = y
+retirer (Noeud _ _ x@(Noeud _ vx _ _) y@(Noeud _ vy _ _))
+  | vx < vy = noeud vx (retirer x) y
+  | otherwise = noeud vy x (retirer y)
 
 construit :: Ord a => [a] -> Tas a
 construit = foldr ajouter Vide
