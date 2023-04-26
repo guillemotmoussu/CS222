@@ -1,0 +1,20 @@
+distance "Mercure" -- Just 0.39
+distance "Jupiter" -- Just 5.2
+distance "Juujpiter" -- Nothing
+
+suivante 0 -- Just "Mercure"
+suivante 10 -- Just "Uranus"
+suivante 31 -- Nothing
+
+ua_vers_km 1 -- 1.4959787e8
+ua_vers_km 0 -- 0.0
+ua_vers_km 15 -- 2.24396805e9
+
+distance_km_1 "Terre" -- Just 1.4959787e8
+distance_km_1 "Mercure" -- Just 5.790918e7
+distance_km_1 "Juujpiter" -- Nothing
+
+distance_km_2 "Terre" -- Just 1.4959787e8
+distance_km_2 [] -- Nothing
+distance_km_2 "Juujpiter" -- Nothing
+

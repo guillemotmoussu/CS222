@@ -1,0 +1,62 @@
+pChiffre "" -- Nothing
+pChiffre "2b-M" -- Just ('2',"b-M")
+pChiffre "JAAJ" -- Nothing
+
+sauterEspaces "" -- ""
+sauterEspaces "   " -- ""
+sauterEspaces "   Jaaj" -- "Jaaj"
+sauterEspaces "Jaaj" -- "Jaaj"
+
+pNombre "" -- Nothing
+pNombre "   -5jaaj" -- Just (-5,"jaaj")
+pNombre "   5 ja aj" -- Just (5,"jaaj")
+
+pCaractere '[' "[1,2,3]" -- Just ((),"1,2,3")
+pCaractere '{' "[1,2,3]" -- Nothing
+pCaractere '3' "[1,2,3]" -- Nothing
+
+pChaine "\"abc\" reste" -- Just ("abc"," reste")
+pChaine "\"abc reste" -- Nothing
+pChaine "abc \"abc\" reste" -- Nothing
+
+(>>>) pChaine pChaine "\"abc\" \"abc\" reste" -- Just ("abc"," reste")
+(>>>) pChaine pNombre "\"abc\" 5\"abc\" reste" -- Just (5,"\"abc\" reste")
+(>>>) pChaine pNombre "\"abc\" abc" -- Nothing
+(>>>) pChaine pNombre "abc \"abc\"" -- Nothing
+
+(<$$>) odd pNombre "5abc" -- Just (True,"abc")
+(<$$>) odd pNombre "abc" -- Nothing
+
+pTroisEntiers "1, 2, -3 reste" -- Just ((1,2,-3)," reste")
+pTroisEntiers "1, 2, -3" -- Just ((1,2,-3),"")
+pTroisEntiers "1, 2, x, -3" -- Nothing
+
+pListeTroisEntiers "1, 2, -3 reste" -- Just ([1,2,-3]," reste")
+pListeTroisEntiers "1, 2, -3" -- Just ([1,2,-3],"")
+pListeTroisEntiers "1, 2, x, -3" -- Nothing
+
+cRepeter pNombre "123 4 56 abc" -- Just ([123,4,56]," abc")
+cRepeter pChaine "\"abc\" \"jaaj\" 123" -- Just (["abc","jaaj"]," 123")
+cRepeter pChiffre "a 12" -- Just("", "a 12")
+cRepeter pChiffre [] -- Just("", "")
+
+pListeEntiers "1 2 -3 reste" -- Just ([1,2,-3]," reste")
+pListeEntiers "1 2 -3" -- Just ([1,2,-3],"")
+pListeEntiers "x 1 2 -3" -- Just ([],"x 1 2 -3")
+
+pBooleen " true2" -- Just (True,"2")
+pBooleen " false2" -- Just (False,"2")
+pBooleen " 2" -- Nothing
+
+(<||>) (pCaractere '[') (pCaractere '{') "[true] 123" -- Just ((),"123")
+(<||>) (pCaractere '[') (pCaractere '{') "{true} 123" -- Just ((),"123")
+(<||>) (pCaractere '[') (pCaractere '{') "true 123" -- Nothing
+
+cRepeterVirgules pNombre "1,2,3y" -- Just ([1,2,3],"y")
+cRepeterVirgules pNombre "1,2,3" -- Just ([1,2,3],"")
+cRepeterVirgules pNombre "abc" -- Just ([],"abc")
+
+pNombreJSON "123 4" --Just (JSON_Int 123," 4")
+pNombreJSON "a 123" --Nothing
+
+pBooleenJSON "true 4" --Just (JSON_Bool True," 4")
