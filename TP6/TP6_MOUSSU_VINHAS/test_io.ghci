@@ -1,0 +1,9 @@
+
+afficher_avec_etoiles 'a' -- ***'a'***
+afficher_avec_etoiles 3.14 -- ***3.14***
+afficher_avec_etoiles True -- ***True***
+afficher_avec_etoiles "Hello" -- ***"Hello"***
+
+echo
+
+wc "./IO.hs" --  19 90 512 ./IO.hs
