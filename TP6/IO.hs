@@ -1,27 +1,17 @@
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-{-# HLINT ignore "Use camelCase" #-}
 
-module IO where
 import Data.List
 import System.Environment
 
-afficher_avec_etoiles :: Show a => a -> IO ()
-afficher_avec_etoiles x = putStrLn $ "***" ++ show x ++ "***"
+afficher_avec_etoiles :: Show a => a -> IO()
+afficher_avec_etoiles x = putStrLn ("***"++show x++"***")
 
-echo :: IO ()
-echo = do
-  str <- getLine
-  putStrLn str
+echo :: IO()
+echo = getLine >>= putStrLn
 
-wc :: String -> IO ()
-wc filename = do
-  str <- readFile filename
-  let nb_lignes = length $ lines str
-  let nb_mots = length $ words str
-  let nb_octets = length str
-  putStrLn $ show nb_lignes ++ " " ++ show nb_mots ++ " " ++ show nb_octets ++ " " ++ filename
+wc :: String -> IO()
+wc x = ((++ " " ++ x) <$> (\z -> show (length $ lines z) ++ " " ++ show (length $ words z) ++ " " ++ show (length z)) <$> readFile x) >>= putStrLn
 
-main :: IO ()
-main = do
-  args <- getArgs
-  mapM_ wc args
+main :: IO()
+main = getArgs >>= (\x -> wc $ head x)
+
+-- EOF
