@@ -6,3 +6,4 @@ afficher_avec_etoiles "Hello" -- ***"Hello"***
 
 echo
 
+wc "./IO.hs" --  19 90 512 ./IO.hs

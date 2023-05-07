@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use camelCase" #-}
 
 import Data.List
 import System.Environment
@@ -9,9 +11,9 @@ echo :: IO()
 echo = getLine >>= putStrLn
 
 wc :: String -> IO()
-wc x = ((++ " " ++ x) <$> (\z -> show (length $ lines z) ++ " " ++ show (length $ words z) ++ " " ++ show (length z)) <$> readFile x) >>= putStrLn
+wc x = readFile x >>= putStrLn . ((++ " " ++ x) <$> (\z -> show (length $ lines z) ++ " " ++ show (length $ words z) ++ " " ++ show (length z)))
 
 main :: IO()
-main = getArgs >>= (\x -> wc $ head x)
+main = getArgs >>= (wc . head)
 
 -- EOF

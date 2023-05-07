@@ -18,3 +18,14 @@ distance_km_2 "Terre" -- Just 1.4959787e8
 distance_km_2 [] -- Nothing
 distance_km_2 "Juujpiter" -- Nothing
 
+distance_suivante_1 "Terre" -- Just 1.52
+distance_suivante_1 "Mercure" -- Just 0.72
+distance_suivante_1 "" -- Nothing
+
+distance_suivante_2 "Terre" -- Just 1.52
+distance_suivante_2 "Mercure" -- Just 0.72
+distance_suivante_2 "" -- Nothing
+
+distance_suivante_3 "Terre" -- Just 1.52
+distance_suivante_3 "Mercure" -- Just 0.72
+distance_suivante_3 "" -- Nothing
