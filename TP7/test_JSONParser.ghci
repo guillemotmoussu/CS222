@@ -9,7 +9,7 @@ sauterEspaces "Jaaj" -- "Jaaj"
 
 pNombre "" -- Nothing
 pNombre "   -5jaaj" -- Just (-5,"jaaj")
-pNombre "   5 ja aj" -- Just (5,"jaaj")
+pNombre "   5 ja aj" -- Just (5," ja aj")
 
 pCaractere '[' "[1,2,3]" -- Just ((),"1,2,3")
 pCaractere '{' "[1,2,3]" -- Nothing
@@ -48,15 +48,36 @@ pBooleen " true2" -- Just (True,"2")
 pBooleen " false2" -- Just (False,"2")
 pBooleen " 2" -- Nothing
 
-(<||>) (pCaractere '[') (pCaractere '{') "[true] 123" -- Just ((),"123")
-(<||>) (pCaractere '[') (pCaractere '{') "{true} 123" -- Just ((),"123")
+(<||>) (pCaractere '[') (pCaractere '{') "[true] 123" -- Just ((),"true] 123")
+(<||>) (pCaractere '[') (pCaractere '{') "{true} 123" -- Just ((),"true} 123")
 (<||>) (pCaractere '[') (pCaractere '{') "true 123" -- Nothing
 
 cRepeterVirgules pNombre "1,2,3y" -- Just ([1,2,3],"y")
 cRepeterVirgules pNombre "1,2,3" -- Just ([1,2,3],"")
 cRepeterVirgules pNombre "abc" -- Just ([],"abc")
 
-pNombreJSON "123 4" --Just (JSON_Int 123," 4")
-pNombreJSON "a 123" --Nothing
+pNombreJSON "123 4" -- Just (JSON_Int 123," 4")
+pNombreJSON "a 123" -- Nothing
 
 pBooleenJSON "true 4" --Just (JSON_Bool True," 4")
+pBooleenJSON "false 4" --Just (JSON_Bool False," 4")
+pBooleenJSON "a 123" -- Nothing
+
+pChaineJSON "\"abc\" 4" -- Just (JSON_String "abc"," 4")
+pChaineJSON "abc 4" -- Nothing
+
+pTableauJSON "[1,2,3] 4" -- Just (JSON_Array [JSON_Int 1,JSON_Int 2,JSON_Int 3]," 4")
+pTableauJSON "[1,2,3 4" -- Nothing
+
+pAttributJSON "\"abc\": 123" -- Just (("abc",JSON_Int 123),"")
+pAttributJSON "abc: 123" -- Nothing
+
+pObjetJSON "{ \"abc\": 123, \"def\": true } 4" -- Just (JSON_Object [("abc",JSON_Int 123),("def",JSON_Bool True)]," 4")
+pObjetJSON "{ \"abc\": 123, \"def\": true 4" -- Nothing
+
+pJSON "123 4" -- Just (JSON_Int 123," 4")
+pJSON "true 4" -- Just (JSON_Bool True," 4")
+pJSON "\"abc\" 4" -- Just (JSON_String "abc"," 4")
+pJSON "[1,2,3] 4" -- Just (JSON_Array [JSON_Int 1,JSON_Int 2,JSON_Int 3]," 4")
+pJSON "{ \"abc\": 123, \"def\": true } 4" -- Just (JSON_Object [("abc",JSON_Int 123),("def",JSON_Bool True)]," 4")
+pJSON "abc 4" -- Nothing
