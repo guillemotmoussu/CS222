@@ -75,6 +75,12 @@ pChaine str =
   (_, str') <- p1 str
   p2 str'
 
+(<<<) :: Parser a -> Parser b -> Parser a
+(<<<) p1 p2 str = do
+  (x, str') <- p1 str
+  (_, str2) <- p2 str'
+  return (x,str2)
+
 -- Opérateur utile pour transformer la valeur retournée. Si le parser renvoyait
 -- Just (a, reste) alors on renvoie Just (f a, reste). S'il avait échoué et
 -- renvoyé Nothing alors on renvoie toujours Nothing.
@@ -151,16 +157,19 @@ pBooleenJSON = JSON_Bool <$$> pBooleen
 pChaineJSON :: Parser JSON
 pChaineJSON = JSON_String <$$> pChaine
 
--- pTableauJSON :: Parser JSON
--- pTableauJSON = pCaractere '[' >>> (JSON_Array <&&> (cRepeterVirgules pJSON))
+pTableauJSON :: Parser JSON
+pTableauJSON = (pCaractere '[' >>> (JSON_Array <$$> cRepeterVirgules pJSON)) <<< pCaractere ']'
 
--- pAttributJSON :: Parser JSON
--- pAttributJSON = pJSON
+pAttributJSON :: Parser (String,JSON)
+pAttributJSON x = do
+  (c,str) <- pChaine x
+  (o,str2) <- (pCaractere ':' >>> pJSON) str
+  return ((c,o),str2)
 
--- pObjetJSON :: Parser JSON
--- pObjetJSON = pCaractere '{' >>> cRepeterVirgules pAttributJSON
+pObjetJSON :: Parser JSON
+pObjetJSON = (pCaractere '{' >>> (JSON_Object <$$> cRepeterVirgules pAttributJSON)) <<< pCaractere '}'
 
--- pJSON :: Parser JSON
--- pJSON = pNombreJSON <||> pBooleenJSON <||> pChaineJSON <||> pTableauJSON
+pJSON :: Parser JSON
+pJSON = pNombreJSON <||> pBooleenJSON <||> pChaineJSON <||> pTableauJSON <||> pObjetJSON
 
 -- EOF
